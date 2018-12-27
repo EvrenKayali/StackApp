@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,30 @@ namespace StackApp.Web
                {
                    options.ConfigureFeatureFolders();
                });
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.SignInScheme = "Cookies";
+
+                    options.Authority = Environment.GetEnvironmentVariable("Authority");
+                    options.RequireHttpsMetadata = false;
+
+                    options.ClientId = "mvc";
+                    options.SaveTokens = true;
+
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("email");
+                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -26,6 +51,8 @@ namespace StackApp.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

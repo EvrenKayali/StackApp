@@ -9,5 +9,7 @@ namespace StackApp.Web.Features.Home
     {
         public string HostName { get; set; }
         public string Version { get; set; }
+        public string Authority { get; set; }
+        public string Name { get; set; }
     }
 }

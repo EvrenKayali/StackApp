@@ -1,6 +1,6 @@
 ﻿@model StackApp.Web.Features.Home.HomeViewModel
 
-<div style="width:50%; margin:0 auto;border:1px solid green; background-color:#ffe9e9">
+<div style="width:50%; margin:0 auto;border:1px solid green; background-color:#ffe9e9; padding:5px;">
     <table>
         <tr>
             <td><b>Host Name</b></td>
@@ -10,6 +10,32 @@
             <td><b>Version</b></td>
             <td>@Model.Version</td>
         </tr>
+        <tr>
+            <td><b>Authority</b></td>
+            <td>@Model.Authority</td>
+        </tr>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <tr>
+                <td><b>Name</b></td>
+                <td>@Model.Name</td>
+            </tr>
+        }
 
     </table>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a style="display:inline-block; width:100%; text-align:center;text-decoration:none;color:green; font-weight:bold"
+           asp-controller="Auth" asp-action="Login">
+            Login
+        </a>
+    }
+    else
+    {
+        <a style="display:inline-block; width:100%; text-align:center;text-decoration:none;color:green; font-weight:bold"
+           asp-controller="Auth" asp-action="Logout">
+            Logout
+        </a>    }
+
 </div>
