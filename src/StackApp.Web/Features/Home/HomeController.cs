@@ -25,6 +25,7 @@
             if (User.Identity.IsAuthenticated)
             {
                 vm.Name = User.Claims.First(c => c.Type == "name").Value;
+                vm.Roles = string.Join(",", User.Claims.Where(c => c.Type == "role").Select(c => c.Value));
             }
             return View(vm);
         }

@@ -15,19 +15,32 @@ namespace StackApp.Auth
             {
                 ClientId = "mvc",
                 ClientName = "MVC Client",
-                AllowedGrantTypes = GrantTypes.Implicit,
+                ClientUri = "https://localhost:44319",
+                AllowedGrantTypes = GrantTypes.Hybrid,
                 RequireConsent = false,
-
-                RedirectUris           = { "https://localhost:44319/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:44319/signout-callback-oidc" },
-
+                ClientSecrets =
+                {
+                    new Secret("secret".Sha256())
+                },
+                RedirectUris =
+                {
+                    "https://localhost:44319/signin-oidc"
+                },
+                PostLogoutRedirectUris =
+                {
+                    "https://localhost:44319/signout-callback-oidc"
+                },
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
                     IdentityServerConstants.StandardScopes.Address,
+                    "roles",
+                    "api1",
                 },
+                AllowOfflineAccess = true,
+                AlwaysIncludeUserClaimsInIdToken = true,
             },
     };
 
@@ -36,11 +49,12 @@ namespace StackApp.Auth
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new IdentityResources.Email(),
+            new IdentityResource("roles", "Roles", new List<string>(){ "role" }),
         };
 
         public static IEnumerable<ApiResource> Apis = new List<ApiResource>
         {
-            new ApiResource("api1", "My API 1")
+            new ApiResource("api1", "My API 1",new string[]{ "roles"})
         };
 
         public static IEnumerable<ApiResource> GetApiResources()

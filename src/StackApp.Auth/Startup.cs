@@ -110,6 +110,7 @@ namespace StackApp.Auth
                 {
                     foreach (var resource in Config.Apis)
                     {
+                       
                         context.ApiResources.Add(resource.ToEntity());
                     }
                     context.SaveChanges();

@@ -11,5 +11,6 @@ namespace StackApp.Web.Features.Home
         public string Version { get; set; }
         public string Authority { get; set; }
         public string Name { get; set; }
+        public string Roles { get; set; }
     }
 }
